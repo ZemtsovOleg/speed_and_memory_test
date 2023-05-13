@@ -18,5 +18,4 @@ def cycle_example():
 cycle_example()
 """
 
-elapsed_time = timeit.timeit(code_to_test, number=1000000)
-print(elapsed_time)
+print(timeit.timeit(code_to_test, number=100000))

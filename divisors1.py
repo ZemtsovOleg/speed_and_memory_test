@@ -1,21 +1,22 @@
-# Программа считает количество делителей
-import datetime
+import timeit
 
-def decorator_time(func):
-    def wrapper(*args, **kwargs):
-        start = datetime.datetime.now()
-        result = func(*args, **kwargs)
-        print(datetime.datetime.now() - start)
-        return result
+''' Программа считает количество делителей '''
 
-    wrapper.__name__ = func.__name__
-    wrapper.__doc__ = func.__doc__
-    return wrapper
 
-#------------------------------------------------
+def divisors(n: int) -> int:
+    divs = 0
+    for x in range(1, int(n ** 0.5) + 1):
+        if n % x == 0:
+            divs += 2
+    return divs - (x * x == n)
 
-@decorator_time
-def divisors(integer):
+
+print(timeit.timeit(lambda: divisors(2999999), number=12))
+
+# ------------------------------------------------
+
+
+def divisors1(integer: int) -> int:
     i, result = 1, 0
     while i * i <= integer:
         if not integer % i:
@@ -25,29 +26,19 @@ def divisors(integer):
         i += 1
     return result
 
-divisors(99999999)
 
-#------------------------------------------------
+print(timeit.timeit(lambda: divisors1(2999999), number=12))
 
-@decorator_time
-def divisors2(n):
-    divs = 0
-    for x in range(1, int(n ** 0.5) +1):
-        if n % x == 0:
-            divs += 2
-    return divs - (x * x == n)
+# ------------------------------------------------
+# медленный
 
-divisors2(99999999)
 
-#------------------------------------------------
-
-# медленный 
-# @decorator_time
-# def divisors1(integer):
-#     i=0
+# def divisors2(integer: int) -> int:
+#     i = 0
 #     for n in range(2, (integer // 2) + 1):
 #         if not integer % n:
-#             i+=1
+#             i += 1
 #     return i
 
-# divisors1(99999)
+
+# print(timeit.timeit(lambda: divisors2(2999999), number=12))

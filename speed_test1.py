@@ -1,157 +1,4 @@
-# Пример крошечного преимущества карты в скорости при использовании точно такой же функции:
-
-# $ python -m timeit -s'xs=range(10)' 'map(hex, xs)'
-# 100000 loops, best of 3: 4.86 usec per loop
-
-# $ python -m timeit -s'xs=range(10)' '[hex(x) for x in xs]'
-# 100000 loops, best of 3: 5.58 usec per loop
-# Пример того, как сравнение производительности становится полностью обратным, когда карте нужна лямбда:
-
-# $ python -m timeit -s'xs=range(10)' 'map(lambda x: x+2, xs)'
-# 100000 loops, best of 3: 4.24 usec per loop
-
-# $ python -m timeit -s'xs=range(10)' '[x+2 for x in xs]'
-# 100000 loops, best of 3: 2.32 usec per loop
-
-# https://stackoverflow.com/questions/1247486/list-comprehension-vs-map
-# есть много разных мнений
-
-
-import datetime
-
-
-def decorator_time(func):
-    def wrapper(*args, **kwargs):
-        start = datetime.datetime.now()
-        result = func(*args, **kwargs)
-        print(datetime.datetime.now() - start)
-        return result
-
-    wrapper.__name__ = func.__name__
-    wrapper.__doc__ = func.__doc__
-    return wrapper
-
-# ------------------------------------------------
-
-
-@decorator_time
-def one1():
-    return list(range(0, 13 ** 7, 2))
-
-
-one1()
-
-# ------------------------------------------------
-
-
-@decorator_time
-def one2():
-    return [x for x in range(0, 13 ** 7, 2)]
-
-
-one2()
-
-# ------------------------------------------------
-
-
-@decorator_time
-def one3():
-    return [x for x in range(13 ** 7) if not x & 1]
-
-
-one3()
-
-# ------------------------------------------------
-
-
-@decorator_time
-def one():
-    return [x for x in range(13 ** 7) if not x % 2]
-
-
-one()
-
-# ------------------------------------------------
-
-
-@decorator_time
-def one4():
-    return list(filter(lambda x: not x & 1, range(13 ** 7)))
-
-
-one4()
-
-# ------------------------------------------------
-
-numbers = list(range(1, 10000000))
-
-# ------------------------------------------------
-
-
-@decorator_time
-def two(numbers):
-    return list(filter(lambda x: not x & 1, numbers))
-
-
-two(numbers)
-
-# ------------------------------------------------
-
-
-@decorator_time
-def two1(numbers):
-    return [x for x in numbers if not x & 1]
-
-
-two1(numbers)
-
-# ------------------------------------------------
-
-
-@decorator_time
-def count_strings(*args):
-    count = 0
-    for i in args:
-        if isinstance(i, str):
-            count += 1
-    return count
-
-
-count_strings(numbers)
-
-# ------------------------------------------------
-
-
-@decorator_time
-def count_strings1(*args):
-    return sum(map(lambda x: isinstance(x, str), args))
-
-
-count_strings1(numbers)
-
-# ------------------------------------------------
-
-
-@decorator_time
-def count_strings2(*args):
-    return sum(1 for v in args if isinstance(v, str))
-
-
-count_strings2(numbers)
-
-# ------------------------------------------------
-# без if считаем True быстрее остальных
-
-
-@decorator_time
-def count_strings3(*args):
-    return sum(isinstance(x, str) for x in args)
-
-
-count_strings3(numbers)
-
-
-# ------------------------------------------------
+import timeit
 
 s = '''It was a bright cold day in April, and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions, though not quickly enough to prevent a swirl of gritty dust from entering along with him.
 
@@ -184,26 +31,22 @@ Suddenly he began writing in sheer panic, only imperfectly aware of what he was 
 April 4th, 1984. Last night to the flicks. All war films. One very good one of a ship full of refugees being bombed somewhere in the Mediterranean. Audience much amused by shots of a great huge fat man trying to swim away with a helicopter after him, first you saw him wallowing along in the water like a porpoise, then you saw him through the helicopters gunsights, then he was full of holes and the sea round him turned pink and he sank as suddenly as though the holes had let in the water, audience shouting with laughter when he sank. then you saw a lifeboat full of children with a helicopter hovering over it. there was a middle-aged woman might have been a jewess sitting up in the bow with a little boy about three years old in her arms. little boy screaming with fright and hiding his head between her breasts as if he was trying to burrow right into her and the woman putting her arms round him and comforting him although she was blue with fright herself, all the time covering him up as much as possible as if she thought her arms could keep the bullets off him. then the helicopter planted a 20 kilo bomb in among them terrific flash and the boat went all to matchwood. then there was a wonderful shot of a child’s arm going up up up right up into the air a helicopter with a camera in its nose must have followed it up and there was a lot of applause from the party seats but a woman down in the prole part of the house suddenly started kicking up a fuss and shouting they didnt oughter of showed it not in front of kids they didnt it aint right not in front of kids it aint until the police turned her turned her out i dont suppose anything happened to her nobody cares what the proles say typical prole reaction they never——'''
 
 
-@decorator_time
 def free2(s):
-    return 'ought ' in s.lower()
+    return 'ought' in s.lower()
 
 
-print(free2(s))
+print(timeit.timeit(lambda: free2(s), number=5))
 
 
-@decorator_time
 def free(s):
     return any(map(lambda x: x.endswith('ought'), s.lower().split()))
 
 
-print(free(s))
+print(timeit.timeit(lambda: free(s), number=5))
 
 
-# этото быстрее чем map
-@decorator_time
 def free1(s):
     return any(w.endswith('ought') for w in s.lower().split())
 
 
-print(free1(s))
+print(timeit.timeit(lambda: free1(s), number=5))
