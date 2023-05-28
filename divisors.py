@@ -1,6 +1,7 @@
-import timeit
-
 ''' Нахождение делителей числа '''
+
+
+import timeit
 
 
 def divisors(integer: int) -> list:
