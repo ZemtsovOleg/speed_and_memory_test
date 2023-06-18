@@ -2,24 +2,10 @@ import random
 import timeit
 
 
-lst = [random.randint(-10000, 10000) for _ in range(5000)]
+lst = [random.randint(0, 100) for _ in range(30)]
 lst1 = lst[:]
 lst2 = lst[:]
 lst3 = lst[:]
-
-# ------------------------------------------------
-
-# def sort_my(lst):
-#     for index in range(len(lst) - 1):
-#         count = index + 1
-#         while count < len(lst):
-#             if lst[index] > lst[count]:
-#                 lst[index], lst[count] = lst[count], lst[index]
-#             else:
-#                 count += 1
-#     return lst
-
-# print(timeit.timeit(lambda: sort_my(lst), number=1))
 
 # ------------------------------------------------
 
@@ -41,7 +27,7 @@ print(timeit.timeit(lambda: bubble_sort(lst1), number=1))
 # ------------------------------------------------
 
 
-def my_insertion_sort(lst):
+def insertion_sort(lst):
     for i in range(1, len(lst)):
         if lst[i] < lst[i-1]:
             for y in range(len(lst[0:i])):
@@ -50,7 +36,7 @@ def my_insertion_sort(lst):
     return lst
 
 
-print(timeit.timeit(lambda: my_insertion_sort(lst2), number=1))
+print(timeit.timeit(lambda: insertion_sort(lst2), number=1))
 
 # ------------------------------------------------
 
@@ -74,7 +60,23 @@ def sort_py(lst):
 print(timeit.timeit(lambda: sort_py(lst), number=1))
 
 
-# def sort_py1(lst):
-#     return sorted(lst)
+def sort_py1(lst):
+    return sorted(lst)
 
-# print(timeit.timeit(lambda: sort_py1(lst2), number=1))
+
+print(timeit.timeit(lambda: sort_py1(lst2), number=1))
+
+
+# ------------------------------------------------
+
+# def sort_my(lst):
+#     for index in range(len(lst) - 1):
+#         count = index + 1
+#         while count < len(lst):
+#             if lst[index] > lst[count]:
+#                 lst[index], lst[count] = lst[count], lst[index]
+#             else:
+#                 count += 1
+#     return lst
+
+# print(timeit.timeit(lambda: sort_my(lst), number=1))

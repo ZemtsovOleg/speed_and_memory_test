@@ -1,3 +1,15 @@
-errors.txt
-/logs
+# Editors
+.vscode/
+.idea/
+
+# Mac/OSX
 .DS_Store
+
+# Windows
+Thumbs.db
+
+# Environments
+venv/
+env/
+
+__pycache__/
