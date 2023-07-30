@@ -30,7 +30,7 @@ def count_strings(arr: list) -> int:
     return count
 
 
-print(timeit.timeit(lambda: count_strings(lst), number=30))
+print(timeit.timeit(lambda: count_strings(lst), number=40))
 
 # ------------------------------------------------
 
@@ -39,7 +39,7 @@ def count_strings1(arr: list) -> int:
     return sum(map(lambda x: isinstance(x, str), arr))
 
 
-print(timeit.timeit(lambda: count_strings1(lst), number=30))
+print(timeit.timeit(lambda: count_strings1(lst), number=40))
 
 # ------------------------------------------------
 
@@ -48,7 +48,7 @@ def count_strings2(arr: list) -> int:
     return sum(1 for v in arr if isinstance(v, str))
 
 
-print(timeit.timeit(lambda: count_strings2(lst), number=30))
+print(timeit.timeit(lambda: count_strings2(lst), number=40))
 
 # ------------------------------------------------
 
@@ -57,4 +57,13 @@ def count_strings3(arr: list) -> int:
     return sum(isinstance(x, str) for x in arr)
 
 
-print(timeit.timeit(lambda: count_strings3(lst), number=30))
+print(timeit.timeit(lambda: count_strings3(lst), number=40))
+
+# ------------------------------------------------
+
+
+def count_strings4(arr: list) -> int:
+    return sum(True for v in arr if isinstance(v, str))
+
+
+print(timeit.timeit(lambda: count_strings4(lst), number=40))

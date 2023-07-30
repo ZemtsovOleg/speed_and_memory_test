@@ -20,7 +20,7 @@ def two(lst: list) -> list:
     return list(filter(lambda x: not x & 1, lst))
 
 
-print(timeit.timeit(lambda: two(numbers), number=3))
+print(timeit.timeit(lambda: two(numbers), number=10))
 
 # ------------------------------------------------
 
@@ -29,4 +29,4 @@ def two1(lst: list) -> list:
     return [x for x in lst if not x & 1]
 
 
-print(timeit.timeit(lambda: two1(numbers), number=3))
+print(timeit.timeit(lambda: two1(numbers), number=10))
