@@ -5,6 +5,8 @@ print(math.lcm(75, 120))
 
 
 def nod(a, b):
+    a = min(a, b)
+    b = max(a, b)
     while b > 0:
         a, b = b, a % b
     return a
